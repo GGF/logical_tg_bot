@@ -8,9 +8,9 @@ start <- function(bot, update) {
   
   # Send query
   bot$sendMessage(update$message$chat_id, 
-                  text = "Ââåäè ñâî¸ èìÿ")
+                  text = "Ğ’Ğ²ĞµĞ´Ğ¸ ÑĞ²Ğ¾Ñ‘ Ğ¸Ğ¼Ñ")
   
-  # ïåğåêëş÷àåì ñîñòîÿíèå äèàëîãà â ğåæèì îæèäàíèÿ ââîäà èìåíè
+  # Ğ¿ĞµÑ€ĞµĞºĞ»ÑÑ‡Ğ°ĞµĞ¼ ÑĞ¾ÑÑ‚Ğ¾ÑĞ½Ğ¸Ğµ Ğ´Ğ¸Ğ°Ğ»Ğ¾Ğ³Ğ° Ğ² Ñ€ĞµĞ¶Ğ¸Ğ¼ Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ½Ğ¸Ñ Ğ²Ğ²Ğ¾Ğ´Ğ° Ğ¸Ğ¼ĞµĞ½Ğ¸
   set_state(chat_id = update$message$chat_id, state = 'wait_name')
   
 }
@@ -40,17 +40,17 @@ enter_name <- function(bot, update) {
   
   # Send message with name
   bot$sendMessage(update$message$chat_id, 
-                  text = paste0(uname, ", ïğèÿòíî ïîçíàêîìèòñÿ, ÿ áîò!"))
+                  text = paste0(uname, ", Ğ¿Ñ€Ğ¸ÑÑ‚Ğ½Ğ¾ Ğ¿Ğ¾Ğ·Ğ½Ğ°ĞºĞ¾Ğ¼Ğ¸Ñ‚ÑÑ, Ñ Ğ±Ğ¾Ñ‚!"))
   
-  # Çàïèñûâàåì èìÿ â ãëîáàëüíóş ïåğåìåííóş
+  # Ğ—Ğ°Ğ¿Ğ¸ÑÑ‹Ğ²Ğ°ĞµĞ¼ Ğ¸Ğ¼Ñ Ğ² Ğ³Ğ»Ğ¾Ğ±Ğ°Ğ»ÑŒĞ½ÑƒÑ Ğ¿ĞµÑ€ĞµĞ¼ĞµĞ½Ğ½ÑƒÑ
   #username <<- uname
   set_chat_data(update$message$chat_id, 'name', uname) 
   
-  # Ñïğàâøèâàåì âîçğàñò
+  # Ğ¡Ğ¿Ñ€Ğ°Ğ²ÑˆĞ¸Ğ²Ğ°ĞµĞ¼ Ğ²Ğ¾Ğ·Ñ€Ğ°ÑÑ‚
   bot$sendMessage(update$message$chat_id, 
-                  text = "Ñêîëüêî òåáå ëåò?")
+                  text = "Ğ¡ĞºĞ¾Ğ»ÑŒĞºĞ¾ Ñ‚ĞµĞ±Ğµ Ğ»ĞµÑ‚?")
   
-  # Ìåíÿåì ñîñòîÿíèå íà îæèäàíèå ââîäà èìåíè
+  # ĞœĞµĞ½ÑĞµĞ¼ ÑĞ¾ÑÑ‚Ğ¾ÑĞ½Ğ¸Ğµ Ğ½Ğ° Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ½Ğ¸Ğµ Ğ²Ğ²Ğ¾Ğ´Ğ° Ğ¸Ğ¼ĞµĞ½Ğ¸
   set_state(chat_id = update$message$chat_id, state = 'wait_age')
   
 }
@@ -60,31 +60,31 @@ enter_age <- function(bot, update) {
   
   uage <- as.numeric(update$message$text)
   
-  # ïğîâåğÿåì áûëî ââåäåíî ÷èñëî èëè íåò
+  # Ğ¿Ñ€Ğ¾Ğ²ĞµÑ€ÑĞµĞ¼ Ğ±Ñ‹Ğ»Ğ¾ Ğ²Ğ²ĞµĞ´ĞµĞ½Ğ¾ Ñ‡Ğ¸ÑĞ»Ğ¾ Ğ¸Ğ»Ğ¸ Ğ½ĞµÑ‚
   if ( is.na(uage) ) {
     
-    # åñëè ââåäåíî íå ÷èñëî òî ïåğåñïğàøèâàåì âîçğàñò
+    # ĞµÑĞ»Ğ¸ Ğ²Ğ²ĞµĞ´ĞµĞ½Ğ¾ Ğ½Ğµ Ñ‡Ğ¸ÑĞ»Ğ¾ Ñ‚Ğ¾ Ğ¿ĞµÑ€ĞµÑĞ¿Ñ€Ğ°ÑˆĞ¸Ğ²Ğ°ĞµĞ¼ Ğ²Ğ¾Ğ·Ñ€Ğ°ÑÑ‚
     bot$sendMessage(update$message$chat_id, 
-                    text = "Òû ââ¸ë íåêîğğåêòíûå äàííûå, ââåäè ÷èñëî")
+                    text = "Ğ¢Ñ‹ Ğ²Ğ²Ñ‘Ğ» Ğ½ĞµĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğµ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ, Ğ²Ğ²ĞµĞ´Ğ¸ Ñ‡Ğ¸ÑĞ»Ğ¾")
     
   } else {
     
-    # åñëè ââåäåíî ÷èñëî ñîîáùàåì ÷òî âîçğàñò ïğèíÿò
+    # ĞµÑĞ»Ğ¸ Ğ²Ğ²ĞµĞ´ĞµĞ½Ğ¾ Ñ‡Ğ¸ÑĞ»Ğ¾ ÑĞ¾Ğ¾Ğ±Ñ‰Ğ°ĞµĞ¼ Ñ‡Ñ‚Ğ¾ Ğ²Ğ¾Ğ·Ñ€Ğ°ÑÑ‚ Ğ¿Ñ€Ğ¸Ğ½ÑÑ‚
     bot$sendMessage(update$message$chat_id, 
-                    text = "ÎÊ, âîçğàñò ïğèíÿò")
+                    text = "ĞĞš, Ğ²Ğ¾Ğ·Ñ€Ğ°ÑÑ‚ Ğ¿Ñ€Ğ¸Ğ½ÑÑ‚")
     
-    # çàïèñûâàåì ãëîáàëüíóş ïåğåìåííóş ñ âîçğàñòîì
+    # Ğ·Ğ°Ğ¿Ğ¸ÑÑ‹Ğ²Ğ°ĞµĞ¼ Ğ³Ğ»Ğ¾Ğ±Ğ°Ğ»ÑŒĞ½ÑƒÑ Ğ¿ĞµÑ€ĞµĞ¼ĞµĞ½Ğ½ÑƒÑ Ñ Ğ²Ğ¾Ğ·Ñ€Ğ°ÑÑ‚Ğ¾Ğ¼
     #userage <<- uage
     set_chat_data(update$message$chat_id, 'age', uage) 
     
-    # ñîîáùàåì êàêèå äàííûå áûëè ñîáğàíû
+    # ÑĞ¾Ğ¾Ğ±Ñ‰Ğ°ĞµĞ¼ ĞºĞ°ĞºĞ¸Ğµ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ Ğ±Ñ‹Ğ»Ğ¸ ÑĞ¾Ğ±Ñ€Ğ°Ğ½Ñ‹
     username <- get_chat_data(update$message$chat_id, 'name')
     userage  <- get_chat_data(update$message$chat_id, 'age')
     
     bot$sendMessage(update$message$chat_id, 
-                    text = paste0("Òåáÿ çîâóò ", username, " è òåáå ", userage, " ëåò. Áóäåì çíàêîìû"))
+                    text = paste0("Ğ¢ĞµĞ±Ñ Ğ·Ğ¾Ğ²ÑƒÑ‚ ", username, " Ğ¸ Ñ‚ĞµĞ±Ğµ ", userage, " Ğ»ĞµÑ‚. Ğ‘ÑƒĞ´ĞµĞ¼ Ğ·Ğ½Ğ°ĞºĞ¾Ğ¼Ñ‹"))
     
-    # âîçâğàùàåì äèàëîã â èñõîäíîå ñîñòîÿíèå
+    # Ğ²Ğ¾Ğ·Ğ²Ñ€Ğ°Ñ‰Ğ°ĞµĞ¼ Ğ´Ğ¸Ğ°Ğ»Ğ¾Ğ³ Ğ² Ğ¸ÑÑ…Ğ¾Ğ´Ğ½Ğ¾Ğµ ÑĞ¾ÑÑ‚Ğ¾ÑĞ½Ğ¸Ğµ
     set_state(chat_id = update$message$chat_id, state = 'start')
   }
   
