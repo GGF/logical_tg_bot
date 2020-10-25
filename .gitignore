@@ -1,1 +1,5 @@
 config.cfg
+bot.db
+*.Rout
+.Rhistory
+.RData

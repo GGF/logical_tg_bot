@@ -18,7 +18,7 @@ set_state <- function(chat_id, state) {
   
   con <- dbConnect(SQLite(), cfg$db_settings$db_path)
   
-  # upsert ñîñòîÿíèå ÷àòà
+  # upsert ÑĞ¾ÑÑ‚Ğ¾ÑĞ½Ğ¸Ğµ Ñ‡Ğ°Ñ‚Ğ°
   dbExecute(con, 
             str_interp("
             INSERT INTO chat_state (chat_id, state)
@@ -38,7 +38,7 @@ set_chat_data <- function(chat_id, field, value) {
   
   con <- dbConnect(SQLite(), cfg$db_settings$db_path)
   
-  # upsert ñîñòîÿíèå ÷àòà
+  # upsert ÑĞ¾ÑÑ‚Ğ¾ÑĞ½Ğ¸Ğµ Ñ‡Ğ°Ñ‚Ğ°
   dbExecute(con, 
             str_interp("
             INSERT INTO chat_data (chat_id, ${field})
@@ -58,7 +58,7 @@ get_chat_data <- function(chat_id, field) {
   
   con <- dbConnect(SQLite(), cfg$db_settings$db_path)
   
-  # upsert ñîñòîÿíèå ÷àòà
+  # upsert ÑĞ¾ÑÑ‚Ğ¾ÑĞ½Ğ¸Ğµ Ñ‡Ğ°Ñ‚Ğ°
   data <- dbGetQuery(con, 
                      str_interp("
             SELECT ${field}
