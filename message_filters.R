@@ -1,13 +1,13 @@
 # ###########################################################
 # message state filters
 
-# фильтр сообщение в состоянии ожидания имени
+# С„РёР»СЊС‚СЂ СЃРѕРѕР±С‰РµРЅРёРµ РІ СЃРѕСЃС‚РѕСЏРЅРёРё РѕР¶РёРґР°РЅРёСЏ РёРјРµРЅРё
 MessageFilters$wait_name <- BaseFilter(function(message) {
   get_state( message$chat_id )  == "wait_name"
 }
 )
 
-# фильтр сообщение в состоянии ожидания возраста
+# С„РёР»СЊС‚СЂ СЃРѕРѕР±С‰РµРЅРёРµ РІ СЃРѕСЃС‚РѕСЏРЅРёРё РѕР¶РёРґР°РЅРёСЏ РІРѕР·СЂР°СЃС‚Р°
 MessageFilters$wait_age <- BaseFilter(function(message) {
   get_state( message$chat_id )   == "wait_age"
 }

@@ -7,7 +7,7 @@ state_h <- CommandHandler('state', state)
 reset_h <- CommandHandler('reset', reset)
 
 # message handlers
-## !MessageFilters$command - îçíà÷àåò ÷òî êîìàíäû äàííûå îáğàáîò÷èêè íå îáğàáàòûâàşò, 
-## òîëüêî òåêñòîâûå ñîîáùåíèÿ
+## !MessageFilters$command - Ğ¾Ğ·Ğ½Ğ°Ñ‡Ğ°ĞµÑ‚ Ñ‡Ñ‚Ğ¾ ĞºĞ¾Ğ¼Ğ°Ğ½Ğ´Ñ‹ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ Ğ¾Ğ±Ñ€Ğ°Ğ±Ğ¾Ñ‚Ñ‡Ğ¸ĞºĞ¸ Ğ½Ğµ Ğ¾Ğ±Ñ€Ğ°Ğ±Ğ°Ñ‚Ñ‹Ğ²Ğ°ÑÑ‚, 
+## Ñ‚Ğ¾Ğ»ÑŒĞºĞ¾ Ñ‚ĞµĞºÑÑ‚Ğ¾Ğ²Ñ‹Ğµ ÑĞ¾Ğ¾Ğ±Ñ‰ĞµĞ½Ğ¸Ñ
 wait_age_h  <- MessageHandler(enter_age,  MessageFilters$wait_age  & !MessageFilters$command)
 wait_name_h <- MessageHandler(enter_name, MessageFilters$wait_name & !MessageFilters$command)
