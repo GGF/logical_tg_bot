@@ -72,3 +72,39 @@ get_chat_data <- function(chat_id, field) {
   return(data[[field]])
   
 }
+
+# read diary records for month
+get_diary_data <- function(chat_id, month) {
+  
+  
+  con <- dbConnect(SQLite(), cfg$db_settings$db_path)
+  
+  # 
+  data <- dbGetQuery(con, str_interp("SELECT record FROM diary_data WHERE chat_id = ${chat_id} AND month = ${month};") )
+  
+  dbDisconnect(con)
+
+  # объединить в один текст
+  t <- ""
+  for (i in 1:length(data$record)) t <- str_c(t,data$record[i], sep="\n\n")
+  
+  return(t)
+  
+}
+
+# write record
+set_diary_record <- function(chat_id, record) {
+  
+  
+  con <- dbConnect(SQLite(), cfg$db_settings$db_path)
+  month <- as.numeric(format(Sys.Date(),"%m"))
+  # upsert состояние чата
+  dbExecute(con, 
+            str_interp("
+            INSERT INTO diary_data (chat_id, record, month)
+                VALUES(${chat_id}, '${record}', '${month}');")
+  )
+  
+  dbDisconnect(con)
+  
+}

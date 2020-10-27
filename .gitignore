@@ -3,3 +3,5 @@ bot.db
 *.Rout
 .Rhistory
 .RData
+test.R
+bot.sh
