@@ -80,7 +80,7 @@ get_diary_data <- function(chat_id, month) {
   con <- dbConnect(SQLite(), cfg$db_settings$db_path)
   
   # 
-  data <- dbGetQuery(con, str_interp("SELECT record FROM diary_data WHERE chat_id = ${chat_id} AND month = ${month};") )
+  data <- dbGetQuery(con, str_interp("SELECT record FROM diary_data WHERE chat_id = ${chat_id} AND rmonth = ${month};") )
   
   dbDisconnect(con)
 
@@ -97,13 +97,17 @@ set_diary_record <- function(chat_id, record) {
   
   
   con <- dbConnect(SQLite(), cfg$db_settings$db_path)
-  month <- as.numeric(format(Sys.Date(),"%m"))
-  # upsert состояние чата
-  dbExecute(con, 
-            str_interp("
-            INSERT INTO diary_data (chat_id, record, month)
-                VALUES(${chat_id}, '${record}', '${month}');")
-  )
+
+  # record month
+  rmonth <- as.numeric(format(Sys.Date(),"%m"))
+
+  # Добавим заголовки в маркдауне даты и времени, я так вставляю потом в дневник
+  rdate <- format(Sys.Date(),"===%d-%m-%Y===\n")
+  rtime <- format(Sys.time(),"**%H:%M**\n")
+  record <- paste0(rdate,rtime,record)
+
+  # insert record
+  res <- dbExecute(con, str_interp("INSERT INTO diary_data (chat_id, record, rdatime, rmonth) VALUES(${chat_id}, '${record}', datetime('now'), '${rmonth}');"))
   
   dbDisconnect(con)
   

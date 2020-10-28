@@ -40,6 +40,15 @@ listrec <- function(bot, update) {
   set_state(chat_id = update$message$chat_id, state = 'wait_month')
 }
 
+#get records for current month
+curlistrec <- function(bot, update) {
+  month <- as.numeric(format(Sys.Date(),'%m'))
+  diary <- get_diary_data(update$message$chat_id, month)
+  bot$sendMessage(update$message$chat_id, 
+                  text = paste0(diary))
+  # статус не меняем, потому что должны бы ждать записей
+}
+
 # enter username
 enter_name <- function(bot, update) {
   

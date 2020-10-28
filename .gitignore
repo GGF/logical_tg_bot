@@ -6,3 +6,4 @@ bot.db
 .RData
 test.R
 bot.sh
+dbcreate.sh

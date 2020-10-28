@@ -6,6 +6,7 @@ start_h <- CommandHandler('start', start)
 state_h <- CommandHandler('state', state)
 reset_h <- CommandHandler('reset', reset)
 listrec_h <- CommandHandler('list', listrec)
+curlistrec_h <- CommandHandler('curlist', curlistrec)
 
 # message handlers
 ## !MessageFilters$command - означает что команды данные обработчики не обрабатывают, 
