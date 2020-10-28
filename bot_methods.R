@@ -7,11 +7,10 @@ start <- function(bot, update) {
   # 
   
   # Send query
-  bot$sendMessage(update$message$chat_id, 
-                  text = "Введи своё имя")
+  bot$sendMessage(update$message$chat_id, text = "Жду записей")
   
-  # переключаем состояние диалога в режим ожидания ввода имени
-  set_state(chat_id = update$message$chat_id, state = 'wait_name')
+  # переключаем состояние диалога в режим ожидания ввода дневниковой записи
+  set_state(chat_id = update$message$chat_id, state = 'wait_diary_record')
   
 }
 
@@ -31,6 +30,14 @@ reset <- function(bot, update) {
   
   set_state(chat_id = update$message$chat_id, state = 'start')
   
+}
+
+#get records
+listrec <- function(bot, update) {
+  #
+  bot$sendMessage(update$message$chat_id, text = "За какой месяц?")
+  #
+  set_state(chat_id = update$message$chat_id, state = 'wait_month')
 }
 
 # enter username
@@ -88,4 +95,46 @@ enter_age <- function(bot, update) {
     set_state(chat_id = update$message$chat_id, state = 'start')
   }
   
+}
+
+# enter month
+enter_month <- function(bot, update) {
+  
+  month <- as.numeric(update$message$text)
+  
+  # проверяем было введено число или нет
+  if ( is.na(month) ) {
+    
+    # если введено не число то переспрашиваем возраст
+    bot$sendMessage(update$message$chat_id, 
+                    text = "Некорректные данные, введите число")
+    
+  } else {
+    
+    # если введено число выбираеам из базы записи за выбранный месяц и выведем
+    diary <- get_diary_data(update$message$chat_id, month)
+    
+    bot$sendMessage(update$message$chat_id, 
+                    text = "Щас найду...")
+    bot$sendMessage(update$message$chat_id, 
+                    text = paste0(diary))
+    
+    # возвращаем диалог в исходное состояние
+    set_state(chat_id = update$message$chat_id, state = 'wait_diary_record')
+  }
+  
+}
+
+# enter diary record
+enter_diary_record <- function(bot, update) {
+  
+  record <- update$message$text
+  
+  set_diary_record(update$message$chat_id, record) 
+  
+  # Пишем что поняли
+  bot$sendMessage(update$message$chat_id, 
+                  text = "угу...")
+
+  # так и остаёмся в ожидании  
 }

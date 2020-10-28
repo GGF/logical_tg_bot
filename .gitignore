@@ -1,5 +1,8 @@
 config.cfg
+config_win.cfg
 bot.db
 *.Rout
 .Rhistory
 .RData
+test.R
+bot.sh
