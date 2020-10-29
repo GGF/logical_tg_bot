@@ -8,6 +8,19 @@ start <- function(bot, update) {
   
   # Send query
   bot$sendMessage(update$message$chat_id, text = "Жду записей")
+  # создаём клавиатуру
+  RKM <- ReplyKeyboardMarkup(
+    keyboard = list(
+      list(KeyboardButton("/curlist"),  KeyboardButton("/list"))
+    ),
+    resize_keyboard = TRUE,
+    one_time_keyboard = FALSE
+  )
+
+  # отправляем клавиатуру
+  bot$sendMessage(update$message$chat_id,
+                  text = 'Выберите команду', 
+                  reply_markup = RKM)
   
   # переключаем состояние диалога в режим ожидания ввода дневниковой записи
   set_state(chat_id = update$message$chat_id, state = 'wait_diary_record')
