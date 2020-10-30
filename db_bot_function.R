@@ -102,8 +102,17 @@ set_diary_record <- function(chat_id, record) {
   rmonth <- as.numeric(format(Sys.Date(),"%m"))
 
   # Добавим заголовки в маркдауне даты и времени, я так вставляю потом в дневник
-  rdate <- format(Sys.Date(),"===%d-%m-%Y===\n")
+  # если уже были сегодня записи, то дату не добавляем, только время
+  
+  res <- dbGetQuery(con, "select COUNT(*) as n from 'diary_data' where date(rdatime) = date('now')")
+  if ( res$n > 0 ) {
+    rdate <- ""
+  } else {
+    rdate <- format(Sys.Date(),"===%d-%m-%Y===\n")
+  }
+
   rtime <- format(Sys.time(),"**%H:%M**\n")
+  # добавим время и если надо дату
   record <- paste0(rdate,rtime,record)
 
   # insert record
