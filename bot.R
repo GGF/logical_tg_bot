@@ -23,12 +23,12 @@ source('handlers.R') # message state filters
 # dispetcher
 updater <- updater +
   start_h +
-#  wait_age_h +
-#  wait_name_h +
   state_h +
   wait_diary_record_h +
   wait_month_h +
   listrec_h +
+  curlistrec_h +
+  query_h +
   reset_h
 
 # run bot

@@ -6,6 +6,7 @@ start_h <- CommandHandler('start', start)
 state_h <- CommandHandler('state', state)
 reset_h <- CommandHandler('reset', reset)
 listrec_h <- CommandHandler('list', listrec)
+curlistrec_h <- CommandHandler('curlist', curlistrec)
 
 # message handlers
 ## !MessageFilters$command - означает что команды данные обработчики не обрабатывают, 
@@ -18,3 +19,6 @@ wait_diary_record_h <- MessageHandler(enter_diary_record, MessageFilters$wait_di
 
 # при выводе записей ожидание ввода месяца, пока только текущего года
 wait_month_h <- MessageHandler(enter_month, MessageFilters$wait_month & !MessageFilters$command)
+
+# обработчик инлайн кнопок выбора месяца
+query_h <- CallbackQueryHandler(month_butons)

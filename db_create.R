@@ -6,10 +6,9 @@ library(RSQLite) # драйвер для подключения к SQLite
 
 # директория проекта
 setwd(Sys.getenv('TG_BOT_PATH'))
-setwd("u:\\projects\\logical_tg_bot\\")
 
 # чтение конфига
-cfg <- read.config('config_win.cfg')
+cfg <- read.config('config.cfg')
 
 # подключение к SQLite
 con <- dbConnect(SQLite(), cfg$db_settings$db_path)

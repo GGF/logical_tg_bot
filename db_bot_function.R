@@ -80,7 +80,8 @@ get_diary_data <- function(chat_id, month) {
   con <- dbConnect(SQLite(), cfg$db_settings$db_path)
   
   # 
-  data <- dbGetQuery(con, str_interp("SELECT record FROM diary_data WHERE chat_id = ${chat_id} AND month = ${month};") )
+  data <- dbGetQuery(con, str_interp("SELECT record FROM diary_data WHERE chat_id = ${chat_id} AND rmonth = ${month};") )
+  print(data)
   
   dbDisconnect(con)
 
@@ -97,13 +98,26 @@ set_diary_record <- function(chat_id, record) {
   
   
   con <- dbConnect(SQLite(), cfg$db_settings$db_path)
-  month <- as.numeric(format(Sys.Date(),"%m"))
-  # upsert состояние чата
-  dbExecute(con, 
-            str_interp("
-            INSERT INTO diary_data (chat_id, record, month)
-                VALUES(${chat_id}, '${record}', '${month}');")
-  )
+
+  # record month
+  rmonth <- as.numeric(format(Sys.Date(),"%m"))
+
+  # Добавим заголовки в маркдауне даты и времени, я так вставляю потом в дневник
+  # если уже были сегодня записи, то дату не добавляем, только время
+  
+  res <- dbGetQuery(con, "select COUNT(*) as n from 'diary_data' where date(rdatime) = date('now')")
+  if ( res$n > 0 ) {
+    rdate <- ""
+  } else {
+    rdate <- format(Sys.Date(),"===%d-%m-%Y===\n")
+  }
+
+  rtime <- format(Sys.time(),"**%H:%M**\n")
+  # добавим время и если надо дату
+  record <- paste0(rdate,rtime,record)
+
+  # insert record
+  res <- dbExecute(con, str_interp("INSERT INTO diary_data (chat_id, record, rdatime, rmonth) VALUES(${chat_id}, '${record}', datetime('now'), '${rmonth}');"))
   
   dbDisconnect(con)
   
