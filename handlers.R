@@ -19,3 +19,6 @@ wait_diary_record_h <- MessageHandler(enter_diary_record, MessageFilters$wait_di
 
 # при выводе записей ожидание ввода месяца, пока только текущего года
 wait_month_h <- MessageHandler(enter_month, MessageFilters$wait_month & !MessageFilters$command)
+
+# обработчик инлайн кнопок выбора месяца
+query_h <- CallbackQueryHandler(month_butons)

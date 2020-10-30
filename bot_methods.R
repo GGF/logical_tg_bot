@@ -3,15 +3,10 @@
 
 # start dialog
 start <- function(bot, update) {
-  
-  # 
-  
-  # Send query
-  bot$sendMessage(update$message$chat_id, text = "Жду записей")
   # создаём клавиатуру
   RKM <- ReplyKeyboardMarkup(
     keyboard = list(
-      list(KeyboardButton("/curlist"),  KeyboardButton("/list"))
+      list(KeyboardButton('/curlist'),  KeyboardButton('/list'))
     ),
     resize_keyboard = TRUE,
     one_time_keyboard = FALSE
@@ -19,7 +14,7 @@ start <- function(bot, update) {
 
   # отправляем клавиатуру
   bot$sendMessage(update$message$chat_id,
-                  text = 'Выберите команду', 
+                  text = 'Жду записей', 
                   reply_markup = RKM)
   
   # переключаем состояние диалога в режим ожидания ввода дневниковой записи
@@ -47,8 +42,30 @@ reset <- function(bot, update) {
 
 #get records
 listrec <- function(bot, update) {
+  
+  # создаём InLine клавиатуру
+  IKM <- InlineKeyboardMarkup(
+    inline_keyboard = list(
+      list(
+        InlineKeyboardButton("01", callback_data = '1'),
+        InlineKeyboardButton("02", callback_data = '2'),
+        InlineKeyboardButton("03", callback_data = '3'),
+        InlineKeyboardButton("04", callback_data = '4')
+      ), list(
+        InlineKeyboardButton("05", callback_data = '5'),
+        InlineKeyboardButton("06", callback_data = '6'),
+        InlineKeyboardButton("07", callback_data = '7'),
+        InlineKeyboardButton("08", callback_data = '8')
+      ), list (
+        InlineKeyboardButton("09", callback_data = '9'), 
+        InlineKeyboardButton("10", callback_data = '10'),
+        InlineKeyboardButton("11", callback_data = '11'),
+        InlineKeyboardButton("12", callback_data = '12')
+      )
+    )
+  )
   #
-  bot$sendMessage(update$message$chat_id, text = "За какой месяц?")
+  bot$sendMessage(update$message$chat_id, text = "За какой месяц?", reply_markup = IKM)
   #
   set_state(chat_id = update$message$chat_id, state = 'wait_month')
 }
@@ -123,28 +140,37 @@ enter_age <- function(bot, update) {
 enter_month <- function(bot, update) {
   
   month <- as.numeric(update$message$text)
-  
+  show_month(bot,update$message$chat_id,month)
+ 
+}
+
+# обработка кнопок месяцев
+month_butons <- function(bot, update) {
+
+  # полученные данные с кнопки (номер месяца)
+  month <- as.numeric(update$callback_query$data)
+  # тут идентификатор чата по другому получается
+  show_month(bot,update$from_chat_id(),month)
+  # сообщим что обработали кнопку
+  bot$answerCallbackQuery(callback_query_id = update$callback_query$id) 
+
+}
+
+# Показывание месяца чтобы не дублировать код
+show_month <- function(bot,chat_id,month) {
   # проверяем было введено число или нет
   if ( is.na(month) ) {
-    
     # если введено не число то переспрашиваем возраст
-    bot$sendMessage(update$message$chat_id, 
-                    text = "Некорректные данные, введите число")
-    
+    bot$sendMessage(chat_id, text = "Некорректные данные, введите число")
   } else {
-    
+    #  еще нужно проверить диапазон 1-12
     # если введено число выбираеам из базы записи за выбранный месяц и выведем
-    diary <- get_diary_data(update$message$chat_id, month)
-    
-    bot$sendMessage(update$message$chat_id, 
-                    text = "Щас найду...")
-    bot$sendMessage(update$message$chat_id, 
-                    text = paste0(diary))
+    diary <- get_diary_data(chat_id, month)
+    bot$sendMessage(chat_id, text = paste0(diary))
     
     # возвращаем диалог в исходное состояние
-    set_state(chat_id = update$message$chat_id, state = 'wait_diary_record')
+    set_state(chat_id = chat_id, state = 'wait_diary_record')
   }
-  
 }
 
 # enter diary record

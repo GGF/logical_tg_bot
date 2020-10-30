@@ -28,6 +28,7 @@ updater <- updater +
   wait_month_h +
   listrec_h +
   curlistrec_h +
+  query_h +
   reset_h
 
 # run bot

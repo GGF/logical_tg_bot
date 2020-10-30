@@ -81,6 +81,7 @@ get_diary_data <- function(chat_id, month) {
   
   # 
   data <- dbGetQuery(con, str_interp("SELECT record FROM diary_data WHERE chat_id = ${chat_id} AND rmonth = ${month};") )
+  print(data)
   
   dbDisconnect(con)
 
