@@ -81,7 +81,6 @@ get_diary_data <- function(chat_id, month) {
   
   # 
   data <- dbGetQuery(con, str_interp("SELECT record FROM diary_data WHERE chat_id = ${chat_id} AND rmonth = ${month};") )
-  print(data)
   
   dbDisconnect(con)
 
@@ -122,3 +121,18 @@ set_diary_record <- function(chat_id, record) {
   dbDisconnect(con)
   
 }
+
+
+# read all ids active chats
+get_active_chat_ids <- function() {
+ 
+  con <- dbConnect(SQLite(), cfg$db_settings$db_path)
+  # 
+  res <- dbGetQuery(con, str_interp("SELECT chat_id FROM chat_state;") )
+
+  dbDisconnect(con)
+
+  return(res$chat_id)
+  
+}
+
