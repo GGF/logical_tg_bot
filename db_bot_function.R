@@ -81,14 +81,11 @@ get_diary_data <- function(chat_id, month) {
   
   # 
   data <- dbGetQuery(con, str_interp("SELECT record FROM diary_data WHERE chat_id = ${chat_id} AND rmonth = ${month};") )
-  
   dbDisconnect(con)
 
-  # объединить в один текст
-  t <- ""
-  for (i in 1:length(data$record)) t <- str_c(t,data$record[i], sep="\n\n")
+  # объединить в один текст, а вот великоват получается для пересылки и придется перед отправкой разбивать, а вернуть всю запись
   
-  return(t)
+  return(data$record)
   
 }
 

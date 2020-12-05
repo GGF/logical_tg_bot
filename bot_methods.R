@@ -70,15 +70,6 @@ listrec <- function(bot, update) {
   set_state(chat_id = update$message$chat_id, state = 'wait_month')
 }
 
-#get records for current month
-curlistrec <- function(bot, update) {
-  month <- as.numeric(format(Sys.Date(),'%m'))
-  diary <- get_diary_data(update$message$chat_id, month)
-  bot$sendMessage(update$message$chat_id, 
-                  text = paste0(diary))
-  # статус не меняем, потому что должны бы ждать записей
-}
-
 # enter username
 enter_name <- function(bot, update) {
   
@@ -136,6 +127,13 @@ enter_age <- function(bot, update) {
   
 }
 
+#get records for current month
+curlistrec <- function(bot, update) {
+  month <- as.numeric(format(Sys.Date(),'%m'))
+  show_month(bot,update$message$chat_id,month)
+  # статус не меняем, потому что должны бы ждать записей
+}
+
 # enter month
 enter_month <- function(bot, update) {
   
@@ -166,7 +164,20 @@ show_month <- function(bot,chat_id,month) {
     #  еще нужно проверить диапазон 1-12
     # если введено число выбираеам из базы записи за выбранный месяц и выведем
     diary <- get_diary_data(chat_id, month)
-    bot$sendMessage(chat_id, text = paste0(diary))
+    # тут надо проверять данные на величину и посылать разными сообщениями
+    t <- ""
+    for (i in 1:length(diary)) {
+      t <- str_c(t,diary[i], sep="\n\n")
+      # Я не знаю сколько конкретно берет телега ну пусть 600, может на больших текста за день падать, хотя может он сам разобьет
+      if ( 600 < str_count(t) ) {
+        bot$sendMessage(chat_id, text = paste0(t))    
+        t <- ""
+      }
+    }
+    # а тут послать остатки
+    if ( 0 <  str_count(t) ) {
+      bot$sendMessage(chat_id, text = paste0(t))
+    }
     
     # возвращаем диалог в исходное состояние
     set_state(chat_id = chat_id, state = 'wait_diary_record')
