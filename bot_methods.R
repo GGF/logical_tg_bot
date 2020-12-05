@@ -3,6 +3,11 @@
 
 # start dialog
 start <- function(bot, update) {
+  run_start(bot,update$message$chat_id)
+}
+
+#  обработка старта, будем вызывать на команду и на перезапуск для уже существующих чатов
+run_start <- function(bot,chat_id) {
   # создаём клавиатуру
   RKM <- ReplyKeyboardMarkup(
     keyboard = list(
@@ -13,12 +18,12 @@ start <- function(bot, update) {
   )
 
   # отправляем клавиатуру
-  bot$sendMessage(update$message$chat_id,
+  bot$sendMessage(chat_id,
                   text = 'Жду записей', 
                   reply_markup = RKM)
   
   # переключаем состояние диалога в режим ожидания ввода дневниковой записи
-  set_state(chat_id = update$message$chat_id, state = 'wait_diary_record')
+  set_state(chat_id = chat_id, state = 'wait_diary_record')
   
 }
 

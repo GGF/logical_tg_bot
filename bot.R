@@ -31,7 +31,8 @@ updater <- updater +
   query_h +
   reset_h
 
-updater$bot$clean_updates()
+updater$bot$clean_updates() # тут чистим сообщения, но после падения нужно восстанавливать статус уже стартовавших, возможно пропустится часть
+
 # run bot
 tryCatch(
   
@@ -59,8 +60,9 @@ tryCatch(
       # информация о том, что бот будет перезапущен
       bot$sendMessage(chat_id = id, text = str_glue('*Перезапускаю бота* в {Sys.time()}'), parse_mode = 'Markdown')
       # перезапускаем скрипт бота, мы же текущий каталог установили?
-      source('bot.R') 
+     
     }
+    source('bot.R') 
   }, 
   # действия которые будут выполненны в любом случае
   finally = {
