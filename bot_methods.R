@@ -193,6 +193,38 @@ show_month <- function(bot,chat_id,month) {
 enter_diary_record <- function(bot, update) {
   
   record <- update$message$text
+
+  if (is.null(record)) {
+    # если нет тестового сообщения будем искать другие (photo, document, voice)
+    if (! is.null(update$message$photo)) {
+      # обработка фотографии, могут передаваться несколько файлов, и похоже на каждый будет оригинал и сжатая копия
+      # группа файлов передается отдельными сообщениями, первым [[1]] идет сжатый файл. Не буду добавлять логику для получения оригинала
+      # мне хватит пережатого jpg, если будет другой формат вьювер потом разберется
+      file_id <- update$message$photo[[1]]$file_id
+      filename <- paste0('photo',update$message$photo[[1]]$file_unique_id,'.jpg')
+    }
+    if (! is.null(update$message$document)) {
+      # обработка файла
+      # тут расширение нашел
+      file_id <- update$message$document$file_id
+      filename <- paste0('doc',update$message$document$file_unique_id,update$message$document$file_name)
+    }
+    if (! is.null(update$message$voice)) {
+      # обработка записи
+      file_id <- update$message$voice$file_id
+      #  голос передаётся в ogg, если и будет другой то плеер потом разберется
+      filename <- paste0('voice',update$message$voice$file_unique_id,'.ogg')
+    }
+    record <- paste0(update$message$caption," file:",filename)
+    # папку с месяцем
+    month <- as.numeric(format(Sys.Date(),"%m"))
+    monthdir <- paste(Sys.getenv('TG_BOT_PATH'),"files",month, sep = "/") 
+    # если нет создать
+    if (!dir.exists(monthdir)) dir.create(monthdir,showWarnings = TRUE, recursive = TRUE, mode = "0777")
+    filename <- paste(monthdir,filename, sep = "/") 
+    # получить с сервером телеги
+    bot$getFile(file_id, destfile = filename)
+  }
   
   set_diary_record(update$message$chat_id, record) 
   

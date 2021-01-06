@@ -33,6 +33,12 @@ updater <- updater +
 
 updater$bot$clean_updates() # тут чистим сообщения, но после падения нужно восстанавливать статус уже стартовавших, возможно пропустится часть
 
+# Для тех чатов что уже есть установим статус
+chat_ids <- get_active_chat_ids()
+for (id in chat_ids) {
+  set_state(chat_id = id, state = 'wait_diary_record')
+}
+
 # run bot
 tryCatch(
   
